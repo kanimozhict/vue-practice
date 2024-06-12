@@ -11,7 +11,6 @@
     @save:employee = "saveEmployee">
     </employee-table>
     <!---this @eventname is used to listen to the events from the child component followed by the function name that needs to be performed by the parent class--->
-
   </div>
 </template>
 
