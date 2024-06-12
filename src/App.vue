@@ -2,13 +2,13 @@
 
   <div class="small-container">
     <h1>Employee Project</h1>
-    <employee-form @add:employee = "addEmployee"></employee-form>
+    <employee-form @add:employee="addEmployee"></employee-form>
     <!---we can use v-bind to bind the component or tell the component where it should look int for what--->
     <!--- :attribute = "objectname"--->
     <!--attribute can be a different nane than object--->
-    <employee-table :getEmployess = 'employees'
-    @delete:employee = "deleteEmployee"
-    @save:employee = "saveEmployee">
+    <employee-table :getEmployess='employees'
+                    @delete:employee="deleteEmployee"
+                    @save:employee="saveEmployee">
     </employee-table>
     <!---this @eventname is used to listen to the events from the child component followed by the function name that needs to be performed by the parent class--->
   </div>
@@ -27,23 +27,24 @@ export default {
     EmployeeTable
 
   },
-  data(){
-    return{
+  data() {
+    return {
       employees: []
     }
   },
-  methods:{
-    async addEmployee(employee){
+  methods: {
+    async addEmployee(employee) {
       try {
         const response = await fetch('https://jsonplaceholder.typicode.com/users',
-            { method:'POST',
+            {
+              method: 'POST',
               //to convert the employee object to Json format
-              body:JSON.stringify(employee),
-              headers:{ 'Content-type': 'application/json; charset=UTF-8'}
+              body: JSON.stringify(employee),
+              headers: {'Content-type': 'application/json; charset=UTF-8'}
             });
         const data = await response.json();
-        this.employees=[...this.employees,data]
-      }catch(e){
+        this.employees = [...this.employees, data]
+      } catch (e) {
         console.log(e);
       }
       //this will help to add the even details into the existing array object if it is array [...existing arrayname,objectname], this will helps to save the existing data
@@ -53,44 +54,43 @@ export default {
       // this.employees=[...this.employees,newEmployee]
 
     },
-    async deleteEmployee(id){
+    async deleteEmployee(id) {
       try {
-        await fetch('https://jsonplaceholder.typicode.com/users/'+id,{
-          method:'DELETE'
+        await fetch('https://jsonplaceholder.typicode.com/users/' + id, {
+          method: 'DELETE'
         })
-        this.employees = this.employees.filter((employee) =>{
+        this.employees = this.employees.filter((employee) => {
           return employee.id != id;
         })
-      }catch (e) {
+      } catch (e) {
         console.log(e);
       }
     },
-    async saveEmployee(id, updatedEmployee){
-      try{
-        const response = await fetch('https://jsonplaceholder.typicode.com/users/'+id,{
-          method:'PUT',
-          body:JSON.stringify(updatedEmployee),
-          headers:{ 'Content-type': 'application/json; charset=UTF-8'}
+    async saveEmployee(id, updatedEmployee) {
+      try {
+        const response = await fetch('https://jsonplaceholder.typicode.com/users/' + id, {
+          method: 'PUT',
+          body: JSON.stringify(updatedEmployee),
+          headers: {'Content-type': 'application/json; charset=UTF-8'}
         });
         const data = await response.json();
-        this.employees.map((employee)=>{
-          return employee.id==id?data:employee;
+        this.employees.map((employee) => {
+          return employee.id == id ? data : employee;
         })
-      }catch (e) {
+      } catch (e) {
         console.log(e);
       }
     },
     //This async is to handle the api request, if there is a delay in the response then we can you this async
-    async getEmployees(){
-      try{
-        const response = await fetch('https://jsonplaceholder.typicode.com/users',{methoid:'GET'});
+    async getEmployees() {
+      try {
+        const response = await fetch('https://jsonplaceholder.typicode.com/users', {methoid: 'GET'});
         //response will be in text so to convert it into json we are using .json method
         //even for converting the await response it needs to be awaiting
         const data = await response.json();
         this.employees = data;
 
-      }
-      catch(e){
+      } catch (e) {
         console.log(e);
 
       }
@@ -98,7 +98,7 @@ export default {
     }
   },
   //mounted is a function property, sowhenever the particualr this component is loaded mounted will bw the first function to be called
-  mounted(){
+  mounted() {
     this.getEmployees();
 
   }
@@ -106,7 +106,7 @@ export default {
 </script>
 
 <style>
-.small-container{
+.small-container {
   max-width: 780px
 }
 </style>
